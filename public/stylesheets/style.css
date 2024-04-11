@@ -1,0 +1,70 @@
+
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#logo{
+  position: absolute;
+  top:0;
+  left: 0;
+}
+
+#logo img{
+  height: 100px;
+  width: 100px;
+}
+
+#icon{
+  position: absolute;
+  top:0;
+  right: 0;
+}
+
+#icon img{
+  height: 100px;
+  width: 100px;
+}
+
+
+nav ul {
+  list-style-type: none; /* remove bullet points */
+  margin: 0;
+  padding: 0;
+  display: flex; /* use flexbox layout */
+  justify-content: center; /* center the links horizontally */
+
+}
+
+nav li {
+  margin: 0 20px; /* add space between the links */
+}
+
+nav a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+#contactimg{
+
+}
+
+#contactimg img{
+  height: 300px;
+  width:100%;
+  text-align: center;
+}
+
+
+#eventimg img{
+  height: 300px;
+  width:100%;
+  text-align: center;
+}

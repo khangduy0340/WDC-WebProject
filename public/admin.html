@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin</title>
+  <!--javascripts-->
+  <script defer src="javascripts/home.js"></script>
+  <!-- VueJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="stylesheets/admin.css">
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body onload="checkLoginStatus()">
+  <!-- navgation bar-->
+  <header>
+    <div class="logo">
+      <a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+    </div>
+    <nav>
+      <ul class="navlist">
+        <li><a href="/clubs.html">Clubs</a></li>
+        <li><a href="/events.html">Events</a></li>
+        <li><a href="/aboutus.html">About</a></li>
+        <li><a href="/contact.html">Contact Us</a></li>
+
+      </ul>
+    </nav>
+    <div class="signin">
+      <button type="button" id='loginButton'></button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/user.html">Account Detail</a>
+        <a onclick="LogOut()" href="#">Sign Out</a>
+      </div>
+      <div class="menuicons"><a href="#"><i class="fa fa-bars"></i></a></div>
+    </div>
+  </header>
+
+  <div class="huge_container" id="app">
+    <div id="club_event">
+      <h1>Admin management board</h1>
+      <h3>Clubs</h3>
+      <ul>
+        <li v-for="club in clubs">
+          <div>
+            <span @click="editClub(club)" style="cursor: pointer;">{{ club.name }}</span>
+            <a href="#" @click.prevent="toggleManagers(club)">Managers</a>
+            <div v-if="club.showManagers">
+              <ul>
+                <li v-for="manager in club.managers">{{ manager.username }}</li>
+              </ul>
+              <form @submit.prevent="addManager">
+                <div>
+                  <select v-model="currentManager.user_id">
+                    <option disabled value="">Please select a user</option>
+                    <option v-for="user in users" :value="user.id">{{ user.username }}</option>
+                  </select>
+                  <button type="submit">+ Manager</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <button type="submit" @click="showClubForm=true">+ Club</button>
+    </div>
+    <div id="clubModal" class="modal" v-if="showClubForm">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" @click="showClubForm=false">&times;</span>
+        <h3 v-if="currentClub.id">Update club</h3>
+        <h3 v-else>Create club</h3>
+        <form @submit.prevent="saveClub">
+          <div>
+            <label for="name">name: </label>
+            <input type="text" id="name" v-model="currentClub.name" placeholder="name" required/>
+          </div>
+          <div>
+            <label for="description">description: </label>
+            <input type="text" id="description" v-model="currentClub.description" placeholder="description" required/>
+          </div>
+          <div>
+            <label for="logo_url">logo url: </label>
+            <input type="text" id="logo_url" v-model="currentClub.logo_url" placeholder="logo url" required/>
+          </div>
+          <!-- <div>
+            <label for="logo_url">manager: </label>
+            <select v-model="currentClub.manager_id">
+              <option disabled value="">Please select a manager</option>
+              <option v-for="user in users" :value="user.id">{{ user.username }}</option>
+            </select>
+          </div> -->
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <div>
+      <div id="board">
+        <h3>System Users</h3>
+        <ul>
+          <li v-for="user in users">
+            <div>
+              <span @click="editUser(user)" style="cursor: pointer;">{{ user.username }}</span>
+
+            </div>
+          </li>
+        </ul>
+        <button type="submit" @click="showUserForm=true">+ User</button>
+      </div>
+    </div>
+
+    <div id="userModal" class="modal" v-if="showUserForm">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" @click="showUserForm=false">&times;</span>
+        <h3 v-if="currentUser.id">Update User</h3>
+        <h3 v-else>Create User</h3>
+        <form @submit.prevent="saveUser">
+          <div>
+            <label for="username">Username: </label>
+            <input type="text" id="username" v-model="currentUser.username" placeholder="Username" required/>
+          </div>
+          <div>
+            <label for="phone">Phone: </label>
+            <input type="text" id="phone" v-model="currentUser.phone" placeholder="Phone" required/>
+          </div>
+          <div>
+            <label for="first_name">First Name: </label>
+            <input type="text" id="first_name" v-model="currentUser.first_name" placeholder="First Name" required/>
+          </div>
+          <div>
+            <label for="last_name">Last Name: </label>
+            <input type="text" id="last_name" v-model="currentUser.last_name" placeholder="Last Name" required/>
+          </div>
+          <div>
+            <label for="email">Email: </label>
+            <input type="text" id="email" v-model="currentUser.email" placeholder="Email" required/>
+          </div>
+          <div v-if="!currentUser.id">
+            <label for="password">Password: </label>
+            <input id="password" v-model="currentUser.password" placeholder="Password" type="password" required/>
+          </div>
+          <div>
+            <label for="is_admin">Is Admin? </label>
+            <input id="is_admin" v-model="currentUser.is_admin" type="checkbox"/>
+          </div>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!--footer-->
+  <footer>
+    <div class="logoend">
+      <img src="image/i3.png" alt="Club Logo">
+    </div>
+    <p class="follow">Follow us</p>
+    <div class="socialicons">
+      <a href="#"><i class="fa fa-facebook"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 Company Name. All rights reserved.</p>
+    <p>Designed by a Studio</p>
+    <a href="/feedback.html">Feedback</a>
+    <a href="/admin.html"> | Admin</a>
+  </footer>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        clubs: [],
+        showClubForm: false,
+        currentClub: {
+          id: null,
+          name: "",
+          description: "",
+          logo_url: ""
+        },
+        users: [],
+        showUserForm: false,
+        currentUser: {
+          id: null,
+          username: "",
+          phone: "",
+          first_name: "",
+          last_name: "",
+          email: "",
+          password: "",
+          is_admin: false,
+        },
+        currentManager: {
+          user_id: "",
+          club_id: "",
+          is_manager: true
+        }
+      },
+      created() {
+        fetch('admin/clubs')
+          .then(response => response.json())
+          .then(data => {
+            this.clubs = data;
+          });
+
+        fetch('admin/users')
+          .then(response => response.json())
+          .then(data => {
+            this.users = data;
+          })
+          .catch(error => {
+            alert("Please login as admin first");
+            window.location.href = `/`;
+          });
+      },
+      methods: {
+        saveUser: function() {
+          if (this.currentUser.id) {
+            // update user
+            fetch(`/admin/users/${this.currentUser.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(this.currentUser)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if(data.message) {
+                alert(data.message);
+                window.location.reload();
+              } else {
+                alert(data.error);
+              }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+          } else {
+            // create user
+            fetch('admin/users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.currentUser)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if(data.message) {
+                alert(data.message);
+                window.location.reload();
+              } else {
+                alert(data.error);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
+        },
+        editUser(user) {
+          this.currentUser = Object.assign({}, user);
+          this.showUserForm = true;
+        },
+        saveClub: function() {
+          if (this.currentClub.id) {
+            // update club
+            fetch(`/admin/clubs/${this.currentClub.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(this.currentClub)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if(data.message) {
+                alert(data.message);
+                window.location.reload();
+              } else {
+                alert(data.error);
+              }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+          } else {
+            // create club
+            fetch('admin/clubs', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.currentClub)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if(data.message) {
+                alert(data.message);
+                window.location.reload();
+              } else {
+                alert(data.error);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
+        },
+        editClub(club) {
+          this.currentClub = Object.assign({}, club);
+          this.showClubForm = true;
+        },
+        toggleManagers(club) {
+          this.currentManager.club_id = club.id
+          club.showManagers = !club.showManagers;
+        },
+        addManager: function() {
+          fetch('admin/user_clubs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.currentManager)
+          })
+          .then(response => response.json())
+          .then(data => {
+            if(data.message) {
+              alert(data.message);
+              window.location.reload();
+            } else {
+              alert(data.error);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Clubs</title>
+  <!-- VueJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="stylesheets/home.css">
+  <link rel="stylesheet" href="stylesheets/club.css">
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+
+<body onload = "checkLoginStatus()">
+  <header>
+		<div class="logo">
+			<a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+		</div>
+		<nav>
+			<ul class="navlist">
+				<li><a href="/clubs.html">Clubs</a></li>
+				<li><a href="/events.html">Events</a></li>
+				<li><a href="/aboutus.html">About</a></li>
+				<li><a href="/contact.html">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="signin" >
+			<button type="button" id ='loginButton'></button>
+			<div id="myDropdown" class="dropdown-content" >
+				<a href="/user.html">Account Detail</a>
+				<a onclick = "LogOut()" href="#" >Sign Out</a>
+			  </div>
+			<div class="menuicons"><a href="#"><i class="fa fa-bars"></i></a></div>
+		</div>
+
+	</header>
+  <!-- banner  -->
+	<section class="banner" >
+		<button type='button' onClick="document.getElementById('app').scrollIntoView();">UniClubs</button>
+	</section>
+  <!-- Club List -->
+  <div id="app">
+    <div class="box">
+      <div class="box2">
+        <h3>Find Clubs: <input type="text" v-model="search" placeholder="Search"></h3>
+        <ol>
+          <li v-for="club in filteredClubs">
+            <a href="#" @click.prevent="selectClub(club)">
+              <img :src="club.logo_url" :alt="club.name" width="50" height="50">
+              {{ club.name }}
+            </a>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!--Upcoming Event List-->
+    <div class="box">
+      <div class="box2">
+        <div v-if="selectedClub">
+          <h2>{{ selectedClub.name }}</h2>
+          <p>{{ selectedClub.description }}</p>
+          <a href="#" @click.prevent="goToClubDetails(selectedClub)">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer -->
+  <footer>
+    <div class="logoend">
+      <a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+    </div>
+    <p class="follow">Follow us</p>
+    <div class="socialicons">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 WDC group. All rights reserved.</p>
+    <p>Designed by a Sam,Xi,Marcus & Alfred</p>
+    <a href="/feedback.html">Feedback</a>
+		<a href="/admin.html"> | Admin</a>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="javascripts/home.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        search: '',
+        clubs: [],
+        club_id: null,
+        events: [],
+        selectedClub: null
+      },
+      methods: {
+        selectClub(club) {
+          this.selectedClub = club;
+        },
+        goToClubDetails(club) {
+          window.location.href = `/club.html?id=${club.id}`;
+        }
+      },
+      async created() {
+        axios.get(`/clubs`)
+        .then(response => {
+          this.clubs = response.data;
+          this.selectedClub = response.data[0];
+        })
+        .catch(error => {
+          alert("Please register first");
+          window.location.href = `/`;
+        });
+      },
+      computed: {
+        filteredClubs() {
+          return this.clubs.filter(club => club.name.toLowerCase().includes(this.search.toLowerCase()));
+        },
+        async events() {
+          const response = await axios.get('http://localhost:8080/clubs/' + this.club_id + '/events');
+          this.clubs = response.data;
+        }
+      },
+    });
+  </script>
+
+</body>
+
+</html>

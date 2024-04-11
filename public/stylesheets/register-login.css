@@ -1,0 +1,118 @@
+body#register {
+    padding: 6px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body#login {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.logo img {
+    height: 100px;
+}
+
+div.logo {
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+}
+
+.centered {
+    text-align: center;
+}
+
+div#main {
+    margin: auto;
+    padding: 5px;
+    max-width: 600px;
+    width: 90%;
+}
+
+.form-container-register {
+    display: flex;
+    height: 760px;
+}
+
+.form-container-login {
+    display: flex;
+    height: 560px;
+}
+
+#register-login-form {
+    max-width: 500px;
+    width: 90%;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: white;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 95%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+button[type="button"] {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 24px;
+    background-color: #00B7FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="button"]:hover {
+    background-color: yellowgreen;
+}
+
+.weighted {
+    font-weight: 600;
+}
+
+.error {
+    color: red;
+}
+
+.whiteText {
+    color: white;
+}
+
+#altOptions {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: lightgrey;
+    border-radius: 4px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+div#google-button {
+    margin: auto;
+    width: 195px;
+    height: 44px;
+}

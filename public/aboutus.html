@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>About us</title>
+    <!-- VueJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="stylesheets/aboutus.css">
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body onload = "checkLoginStatus()">
+    <header>
+        <div class="logo">
+            <a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+        </div>
+        <nav>
+            <ul class="navlist">
+                <li><a href="/clubs.html">Clubs</a></li>
+				<li><a href="/events.html">Events</a></li>
+				<li><a href="/aboutus.html">About</a></li>
+				<li><a href="/contact.html">Contact Us</a></li>
+
+            </ul>
+        </nav>
+        <div class="signin" >
+			<button type="button" id ='loginButton'></button>
+			<div id="myDropdown" class="dropdown-content" >
+				<a href="/user.html">Account Detail</a>
+				<a onclick = "LogOut()" href="#">Sign Out</a>
+			  </div>
+			<div class="menuicons"><a href="#"><i class="fa fa-bars"></i></a></div>
+		</div>
+    </header>
+    <!-- banner  -->
+    <section class="banner">
+        <button type='button'>About Us</button>
+    </section>
+    <!-- About Us -->
+    <section class="abouttext">
+        <h2>About Us</h2>
+        <p>UniClubs is a community of like-minded individuals who share a passion for creating a club page. We strive to
+            provide a welcoming and inclusive environment where members can connect, learn, and grow together.</p>
+        <h2>Our Story</h2>
+        <p>Our club was founded in 2023 by a group of students.We welcome anyone who shares our passion for club's activities to join us. Membership benefits include
+            keeping in touch with latest events. To become a member, please fill out our online membership form.
+            We also organize a variety of events throughout the year. Check out our
+            events calendar for upcoming events.</p>
+        <h2>Contact Us</h2>
+        <p>For more information about our club and events, please contact us at:
+            <a href="contact.html">Here</a>
+        </p>
+        <div></div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+		<div class="logoend">
+			<img src="image/i3.png" alt="Club Logo">
+		</div>
+		<p class="follow">Follow us</p>
+		<div class="socialicons">
+			<a href="#"><i class="fa fa-facebook"></i></a>
+			<a href="#"><i class="fa fa-twitter"></i></a>
+			<a href="#"><i class="fa fa-instagram"></i></a>
+		</div>
+		<p>&copy; 2023 WDC group. All rights reserved.</p>
+		<p>Designed by a Sam,Xi,Marcus & Alfred</p>
+		<a href="/feedback.html">Feedback</a>
+		<a href="/admin.html"> | Admin</a>
+	</footer>
+    <!-- JavaScript -->
+    <script src="javascripts/aboutus.js"></script>
+
+</body>
+
+</html>

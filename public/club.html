@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chess Club</title>
+  <!-- VueJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="stylesheets/home.css">
+  <link rel="stylesheet" href="stylesheets/club.css">
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body onload = "checkLoginStatus()">
+  <header>
+		<div class="logo">
+			<a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+		</div>
+		<nav>
+			<ul class="navlist">
+				<li><a href="/clubs.html">Clubs</a></li>
+				<li><a href="/events.html">Events</a></li>
+				<li><a href="/aboutus.html">About</a></li>
+				<li><a href="/contact.html">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="signin" >
+			<button type="button" id ='loginButton'></button>
+			<div id="myDropdown" class="dropdown-content" >
+				<a href="/user.html">Account Detail</a>
+				<a onclick = "LogOut()" href="#" >Sign Out</a>
+			  </div>
+			<div class="menuicons"><a href="#"><i class="fa fa-bars"></i></a></div>
+		</div>
+	</header>
+
+  <div id="app">
+    <!-- banner -->
+    <section class="banner" v-if="!club.is_member">
+      <button type='button' @click="joinClub">Join club</button>
+    </section>
+
+    <div>
+    <!--club information-->
+      <div class="box">
+        <div class="box2">
+          <h1>{{ club.name }}</h1>
+          <p>{{ club.description }}</p>
+          <h3>Updates</h3>
+          <ul>
+            <li v-for="post in club.club_posts">
+              {{ post.is_private ? "[MEMBERS ONLY]" : "[PUBLIC]" }} {{ post.description }}
+            </li>
+          </ul>
+          <button type="submit" v-if="club.is_manager" @click="postModal=true">+ Update</button>
+        </div>
+        <div class="box2" v-if="club.is_manager">
+          <h3>Members</h3>
+          <ul>
+            <li v-for="user in club.users">
+              {{ user.username }} - {{user.email}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--Event List-->
+      <div class="box">
+        <h1>Events</h1>
+        <div class="box1">
+          <ul>
+            <li v-for="event in club.events">
+              {{ formatDateTime(event.event_time) }}: {{ event.title }}
+              <a href="#" @click.prevent="rsvp(event)" v-if="!event.hasRSVP">RSVP</a>
+              <span v-else>RSVP'd</span>
+              <a href="#" @click.prevent="eventDetails(event)">Details</a>
+              <a href="#" @click.prevent="toggleAttendees(event)" v-if="club.is_manager && (event.users.length > 0)">Attendees</a>
+              <div v-show="event.showAttendees">
+                <ul>
+                  <li v-for="user in event.users">{{ user.username }} - {{ user.email }}</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <button type="submit" v-if="club.is_manager" @click="addEventModal=true">+ Event</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" v-if="postModal">
+      <div class="modal-content">
+        <span @click="postModal=false">&times;</span>
+        <form @submit.prevent="addPost">
+          <h3>New Post</h3>
+          <div>
+            <label>
+              Content:
+              <textarea v-model="newPost.description" required></textarea>
+            </label>
+          </div>
+          <div>
+            <label>
+              Members Visible Only:
+              <input type="checkbox" v-model="newPost.is_private">
+            </label>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div v-if="editEventModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" @click="editEventModal=false">&times;</span>
+        <h2>Event Details</h2>
+        <form @submit.prevent="updateEvent">
+          <div>
+            <label for="title">Title:</label>
+            <input id="title" type="text" v-model="editEvent.title" :disabled="!club.is_manager" required>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <textarea id="description" v-model="editEvent.description" :disabled="!club.is_manager"></textarea>
+          </div>
+          <div>
+            <label for="event_time">Event Time:</label>
+            <input id="event_time" type="datetime-local" v-model="editEvent.event_time" :disabled="!club.is_manager" required>
+          </div>
+          <div>
+            <button type="submit" v-if="club.is_manager">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" v-if="addEventModal">
+      <div class="modal-content">
+        <span @click="addEventModal=false">&times;</span>
+        <form @submit.prevent="addEvent">
+          <h3>New Event</h3>
+          <div>
+            <label>
+              Title:
+              <input type="text" v-model="newEvent.title" required>
+            </label>
+          </div>
+          <div>
+            <label>
+              Description:
+              <textarea v-model="newEvent.description" required></textarea>
+            </label>
+          </div>
+          <div>
+            <label>
+              Event Time:
+              <input type="datetime-local" v-model="newEvent.event_time" required>
+            </label>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer>
+    <div class="logoend">
+      <a href="/home"><img src="image/i3.png" alt="Club Logo"></a>
+    </div>
+    <p class="follow">Follow us</p>
+    <div class="socialicons">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 WDC group. All rights reserved.</p>
+    <p>Designed by a Sam,Xi,Marcus & Alfred</p>
+    <a href="/feedback.html">Feedback</a>
+		<a href="/admin.html"> | Admin</a>
+</footer>
+
+
+  <!-- JavaScript -->
+  <script src="javascripts/home.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          club: {},
+          newEvent: {
+            title: '',
+            description: '',
+            event_time: ''
+          },
+          newPost: {
+            description: '',
+            is_private: false
+          },
+          addEventModal: false,
+          editEventModal: false,
+          postModal: false
+        };
+      },
+      methods: {
+        addPost() {
+          let data = {
+            description: this.newPost.description,
+            is_private: this.newPost.is_private
+          };
+
+          axios.post(`/clubs/${this.club.id}/posts`, data)
+          .then(response => {
+            if (response.status === 200) {
+              data.id = response.data;
+              this.club.club_posts.unshift(data);
+              this.newPost = { description: '', is_private: false };
+            } else {
+              console.error('Failed to create post: ' + response.status);
+            }
+          });
+          this.postModal = false;
+        },
+        rsvp(event) {
+          axios.post(`/clubs/${this.club.id}/events/${event.id}/rsvp`)
+            .then(response => {
+              event.hasRSVP = true;
+              event.users.unshift(response.data)
+            })
+            .catch(error => {
+              alert(error.response.data.message );
+            });
+        },
+        addEvent() {
+          let data = {
+            title: this.newEvent.title,
+            description: this.newEvent.description,
+            event_time: this.newEvent.event_time
+          };
+
+          axios.post(`/clubs/${this.club.id}/events`, data)
+          .then(response => {
+            if (response.status === 200) {
+              data.id = response.data;
+              this.club.events.unshift(data);
+              this.newEvent = { title: '', description: '', event_time: '' };
+              this.addEventModal = false;
+              location.reload();
+            } else {
+              console.error('Failed to create event: ' + response.status);
+            }
+          });
+        },
+        eventDetails(event) {
+          this.editEvent = event;
+          this.editEventModal = true;
+        },
+        async updateEvent() {
+          try {
+            await axios.put(`/clubs/${this.club.id}/events/${this.editEvent.id}`, {
+              title: this.editEvent.title,
+              description: this.editEvent.description,
+              event_time: this.editEvent.event_time
+            });
+            this.editEventModal = false;
+            location.reload();
+          } catch (error) {
+            console.log(error);
+            alert('An error occurred while updating the event');
+          }
+        },
+        joinClub() {
+          axios.post(`/clubs/${this.club.id}/join`)
+          .then(response => {
+            alert(response.data.message); // "Successfully joined the club"
+            location.reload();
+          })
+          .catch(error => {
+            alert(error.response.data.message);
+          });
+        },
+        formatDateTime(dateTimeString) {
+          let regex = /(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}):\d{2}.\d{3}Z/;
+          let match = dateTimeString.match(regex);
+          if (match) {
+              return match[1] + ' ' + match[2];
+          } else {
+              return 'Invalid datetime string';
+          }
+        },
+        toggleAttendees(event) {
+          event.showAttendees = !event.showAttendees;
+        }
+      },
+      async created() {
+        const params = new URLSearchParams(window.location.search);
+        const clubId = params.get('id');
+        try {
+          const response = await axios.get(`/clubs/${clubId}`);
+          this.club = { ...response.data };
+        } catch (error) {
+          console.error(error);
+        }
+      },
+    });
+
+    window.addEventListener('load', function() {
+      // Get the modal elements
+      var modals = document.querySelectorAll('.modal');
+
+      // Loop through all the modals and remove the class
+      for (var i = 0; i < modals.length; i++) {
+          modals[i].classList.remove('modal-hidden');
+      }
+    });
+  </script>
+</body>
+
+</html>

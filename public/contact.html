@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Contact us</title>
+	<!-- VueJS CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="stylesheets/contacts.css">
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="javascripts/contact.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjdIodP4tk9oh8mu-StepmqmiDOk9d4O0"></script>
+
+</head>
+
+<body onload="initMap(), checkLoginStatus()">
+
+<!-- navgation bar-->
+    <header>
+		<div class="logo">
+			<a href="/"><img src="image/i3.png" alt="Club Logo"></a>
+		</div>
+		<nav>
+			<ul class="navlist">
+				<li><a href="/clubs.html">Clubs</a></li>
+				<li><a href="/events.html">Events</a></li>
+				<li><a href="/aboutus.html">About</a></li>
+				<li><a href="/contact.html">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="signin" >
+			<button type="button" id ='loginButton'></button>
+			<div id="myDropdown" class="dropdown-content" >
+				<a href="/user.html">Account Detail</a>
+				<a onclick = "LogOut()" href="#" >Sign Out</a>
+			  </div>
+			<div class="menuicons"><a href="#"><i class="fa fa-bars"></i></a></div>
+		</div>
+	</header>
+
+<!--banner-->
+    <section class="banner">
+		<button type = 'button'>Contact Us</button>
+	</section>
+
+    <!--contact info-->
+    <div id="contactinfo">
+        <div id="text">
+        <h1>Where to find us?</h1>
+
+        <p>The University Of Adelaide</p>
+        <h1>How to contact us?</h1>
+
+        <p>Tel:12345342134</p>
+        <p>E-mail:123432@123321.com</p>
+
+        <h1>Office hour</h1>
+        <p>8 am. - 4pm.     Monday
+            <br>
+           8 am. - 4pm.     Tuesday
+           <br>
+           9 am. - 5pm.     Wednesday
+           <br>
+           8 am. - 4pm.     Thursday
+           <br>
+           8 am. - 4pm.     Friday
+            <br>
+           Closed     Saturday-Sunday
+        </p>
+        </div>
+<div>
+<!--map location-->
+        <div id="map"></div>
+        <div id="QA">
+            <h2>Q & A</h2>
+            <ul>
+                <li><a href="/aboutus.html">Who are we?</a></li>
+                <li><a href="/feedback.html">What should I do if server crack down?</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--footer-->
+<footer>
+    <div class="logoend">
+        <img src="image/i3.png" alt="Club Logo">
+    </div>
+    <p class="follow">Follow us</p>
+    <div class="socialicons">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 WDC group. All rights reserved.</p>
+    <p>Designed by a Sam,Xi,Marcus & Alfred</p>
+    <a href="/feedback.html">Feedback</a>
+		<a href="/admin.html"> | Admin</a>
+</footer>
+</body>
+</html>
+
+
+

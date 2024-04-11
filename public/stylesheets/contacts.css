@@ -1,0 +1,324 @@
+
+
+body {
+    background-color: white;
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/* Header CSS */
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    color: black;
+    padding: 10px 8%;
+    position: relative;
+}
+/* Navigation bar CSS */
+.sticky {
+    border-bottom: 2px solid black;
+    width: 90%;
+}
+
+.logo img {
+    height: auto;
+    width: 100px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+}
+
+nav li {
+    margin-right: 80px;
+}
+
+nav a {
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+
+
+}
+
+nav a:hover {
+    color: white;
+    background: black;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: all .35s ease;
+}
+
+.signin {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.signin button {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+.signin button:hover {
+    color: white;
+    background: black;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 4px;
+    transition: all .35s ease;
+}
+
+.menuicons {
+    display: none;
+}
+
+.banner {
+    background-image: url(../image/i1.jpg);
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 350px 20px;
+    color: #fff;
+}
+
+.banner button {
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 70px;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+.banner button:hover {
+    color: black;
+    background: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all .35s ease;
+}
+/* dropdown list when hover */
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+  }
+
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: black;
+    margin-top: 150px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    color: black;
+    background-color: white;}
+
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {display:block;}
+.menuicons {
+    display: none;
+}
+
+.banner {
+    background-image: url(../image/i1.jpg);
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 350px 20px;
+    color: #fff;
+}
+
+.banner button {
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 70px;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+.banner button:hover {
+    color: black;
+    background: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all .35s ease;
+}
+
+/* map */
+#map{
+    height: 350px;
+    width: 350px;
+    width: 400px;
+    margin: 20px;
+    position: absolute;
+    right: 120px;
+    bottom: 5;
+    z-index: 0;
+    margin-right: 165px;
+  }
+#contactinfo{
+    display: flex;
+    justify-content: center;
+    align-items: left;
+}
+/* text */
+#contactinfo p, h1{
+color: black;
+}
+
+#text{
+    margin-right: 400px;
+}
+
+
+#contactinfo{
+    display: flex;
+    margin: 20px;
+
+}
+
+#QA{
+    background-color: hsl(147, 29%, 82%);
+    margin: 20px;
+    padding: 20px;
+    width: 50%;
+    margin-left: 370px;
+    margin-top: 400px;
+}
+#QA a{
+    color:black
+}
+
+
+/* Footer CSS */
+footer {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+.follow {
+    margin-top: -170px;
+    font-size: 30px;
+}
+
+.socialicons a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #333;
+    font-size: 30px;
+    margin-top: -40px;
+}
+
+.socialicons a:hover {
+    color: #007bff;
+}
+
+.fab {
+    font-size: inherit;
+}
+
+.logoend img {
+    height: 200px;
+    margin-right: 1600px;
+    margin-top: 0px;
+}
+
+@media (max-width: 1208px) {
+
+    .signin button:hover {
+        color: black;
+        background: white;
+        text-decoration: none;
+        padding: 0px;
+        border-radius: 0px;
+        transition: all 0s ease;
+    }
+    .menuicons {
+        display: block;
+        color: #333;
+        font-size: 30px;
+    }
+    .navlist {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 300px;
+        height: 40vh;
+        background: black;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 50px 20px;
+        transition: .35s;
+    }
+
+    .navlist a {
+        display: block;
+        margin-left: 70px;
+        margin-bottom: 65px;
+        font-size: 30px;
+        color: white;
+
+    }
+
+    .navlist a:hover {
+        color: black;
+        background: white;
+        text-decoration: none;
+        transition: all 0s ease;
+        padding: 0px;
+        border-radius: 0px;
+        border-bottom: 2px solid black;
+    }
+
+    .navlist.open {
+        right: 0;
+    }
+}
+
+@media (max-width: 1336px) {
+    .signin button {
+        margin-right: 0%;
+    }
+}
